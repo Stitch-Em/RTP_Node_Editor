@@ -13,7 +13,7 @@ void Node_Int::Render()
 
     ImGui::SetCursorPosX(pinStartX);
 
-    std::string preview = std::to_string(Value);
+    std::string preview = std::to_string(Data);
     ImGui::Text("%s ", preview);
 
     for (auto& input : Inputs) {
@@ -37,5 +37,5 @@ void Node_Int::Render()
 
 void Node_Int::RenderDetails()
 {
-    ImGui::InputInt("Int", &Value);
+    ImGui::InputInt("Int", &Data);
 }

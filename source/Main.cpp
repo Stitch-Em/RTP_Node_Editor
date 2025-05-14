@@ -1,12 +1,5 @@
 ﻿
 #include "Graph.h"
-#include "Nodes/Values/GetItem.h"
-#include "Nodes/Values/ConstInt.h"
-#include "Nodes/Values/GetPinata.h"
-#include "Nodes/Requirements/PinataRequirement.h"
-#include "Nodes/Requirements/ItemRequirement.h"
-#include "Nodes/RootPinata.h"
-#include "Nodes/Actions/RomanceAction.h"
 #include "Saving/SaveSystem.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -63,15 +56,21 @@ int main()
     g_HeaderTexture = LoadTexture("Data/BlueprintBackground.png");
     editor = ed::CreateEditor();
 
-    // --- Demo Nodes ---
+	// --- Demo Nodes --- (Replace with load from file eventually), Locations wont save with a rand() ID so we maunally set them
     {
-        nodes.push_back(new Node_GetItem(rand()));
-        nodes.push_back(new Node_Int(rand()));
-        nodes.push_back(new Node_GetPinata(rand()));
-		nodes.push_back(new Node_PinataRequirement(rand()));
-		nodes.push_back(new Node_ItemRequirement(rand()));
-		nodes.push_back(new Node_RomanceAction(rand()));
-		nodes.push_back(new Node_PinataRoot(rand()));
+        nodes.push_back(new Node_GetItem(1));
+        nodes.push_back(new Node_Int(2));
+        nodes.push_back(new Node_GetPinata(3));
+		nodes.push_back(new Node_PinatasAteRequirement(4));
+		nodes.push_back(new Node_ItemsAteRequirement(5));
+		nodes.push_back(new Node_PinatasInGardenRequirement(6));
+		nodes.push_back(new Node_ItemsInGardenRequirement(7));
+		nodes.push_back(new Node_RomanceAction(8));
+		nodes.push_back(new Node_PinataRoot(9));
+		nodes.push_back(new Node_VisitAction(10));
+		nodes.push_back(new Node_VariantAction(11));
+		nodes.push_back(new Node_AppearAction(12));
+		nodes.push_back(new Node_ResidentAction(13));
     }
 
     while (!glfwWindowShouldClose(window)) {
@@ -105,6 +104,17 @@ int main()
 
 
 		ImGui::Begin("Debug Window");
+		if (ImGui::Button("Save")) {
+			SaveFile("Test.json");
+		}
+		if (ImGui::Button("Load")) {
+			if (DoesSaveExist("Test.json")) {
+				LoadFile("Test.json");
+			}
+			else {
+				std::cerr << "Save file does not exist!" << std::endl;
+			}
+		}
 		//Displays the selected node ID/ Nodes / Links
 		ImGui::Text("Selected Node ID: %d", selectedNodeId.Get());
 		ImGui::Text("Nodes: %d", nodes.size());

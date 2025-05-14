@@ -16,8 +16,6 @@ public:
 		Outputs.back().Node = this;
     }
 
-	int Value = 0;
-
     void Render() override;
 
     void RenderDetails() override;

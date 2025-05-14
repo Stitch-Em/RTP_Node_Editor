@@ -30,8 +30,6 @@ public:
 
     }
 
-	int SelectedIndex = 0;
-
     void Render() {
 		util::BlueprintNodeBuilder builder(g_HeaderTexture, 128, 128);
 		builder.Begin(ID);
@@ -41,7 +39,7 @@ public:
 		ImGui::TextUnformatted(Name.c_str());
 		builder.EndHeader();
 		ImGui::SetCursorPosX(pinStartX);
-        std::string preview = itemNames[SelectedIndex];
+        std::string preview = itemNames[Data];
 		ImGui::Text("%s ", preview.c_str());
 		for (auto& input : Inputs) {
 			builder.Input(input.ID);
@@ -61,11 +59,11 @@ public:
     }
 
 	void RenderDetails() override {
-        if (ImGui::BeginCombo("Item", itemNames[SelectedIndex].c_str())) {
+        if (ImGui::BeginCombo("Item", itemNames[Data].c_str())) {
 			for (int i = 0; i < itemNames.size(); ++i) {
-				bool isSelected = (SelectedIndex == i);
+				bool isSelected = (Data == i);
 				if (ImGui::Selectable(itemNames[i].c_str(), isSelected)) {
-					SelectedIndex = i;
+					Data = i;
 				}
 				if (isSelected) {
 					ImGui::SetItemDefaultFocus();
@@ -76,7 +74,7 @@ public:
 	}
 
 	std::string GetSelectedItem() {
-		return itemNames[SelectedIndex];
+		return itemNames[Data];
 	}
 
 private:

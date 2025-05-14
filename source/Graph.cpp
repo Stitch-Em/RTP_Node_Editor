@@ -37,7 +37,7 @@ void DrawGraph()
 
             // Pick the output pin (for color reference)
             Pin* colorPin = from && from->Kind == PinKind::Output ? from : to;
-
+            if (!colorPin) { continue; }
             ImVec4 color = GetPinColor(colorPin->Type); // from NodeHelpers.h
             ed::Link(link.ID, link.From, link.To, color, 2.5f); // thickness optional
         }

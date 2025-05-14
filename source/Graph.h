@@ -42,15 +42,9 @@ struct NodeSave {
 
     ed::NodeId ID;
     std::string Name;
-    std::vector<Pin> Inputs;
-    std::vector<Pin> Outputs;
-    ImColor Color;
-    std::vector<std::byte> Data; // Additional data for saving
-
-    // zpp_bits serialization support
-    auto members() {
-        return std::tie(ID, Name, Inputs, Outputs, Color, Data);
-    }
+    int Data;
+	std::vector<Pin> Inputs;
+	std::vector<Pin> Outputs;
 };
 
 struct Link {
