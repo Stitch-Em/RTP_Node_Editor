@@ -39,7 +39,8 @@ public:
 		Outputs = data.Outputs;
     }
 
-
+	~Node() {
+	}
 };
 
 // Helper to find the node connected to a given input pin

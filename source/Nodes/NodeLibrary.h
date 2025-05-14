@@ -73,6 +73,61 @@ inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = node
 		std::cerr << "Node type not recognized: " << name << std::endl;
 	}
 
+	if (isValid) {
+		ed::SetNodePosition(nodes.back()->ID, pos);
+	}
+
 	return isValid;
+}
+
+inline void SpawnMenu(ImVec2 pos) {
+
+	if (ImGui::BeginMenu("Values")) {
+		if (ImGui::MenuItem("Get Item")) {
+			SpawnNodeFromName("Get Item", pos);
+		}
+		if (ImGui::MenuItem("Get Pinata")) {
+			SpawnNodeFromName("Get Pinata", pos);
+		}
+		if (ImGui::MenuItem("Int")) {
+			SpawnNodeFromName("Int", pos);
+		}
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("Requirements")) {
+		if (ImGui::MenuItem("Items Ate")) {
+			SpawnNodeFromName("Items Ate", pos);
+		}
+		if (ImGui::MenuItem("Items In Garden")) {
+			SpawnNodeFromName("Items In Garden", pos);
+		}
+		if (ImGui::MenuItem("Pinatas Ate")) {
+			SpawnNodeFromName("Pinatas Ate", pos);
+		}
+		if (ImGui::MenuItem("Pinatas In Garden")) {
+			SpawnNodeFromName("Pinatas In Garden", pos);
+		}
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("Actions")) {
+		if (ImGui::MenuItem("Romance Action")) {
+			SpawnNodeFromName("Romance Action", pos);
+		}
+		if (ImGui::MenuItem("Visit Action")) {
+			SpawnNodeFromName("Visit Action", pos);
+		}
+		if (ImGui::MenuItem("Variant Action")) {
+			SpawnNodeFromName("Variant Action", pos);
+		}
+		if (ImGui::MenuItem("Appear Action")) {
+			SpawnNodeFromName("Appear Action", pos);
+		}
+		if (ImGui::MenuItem("Resident Action")) {
+			SpawnNodeFromName("Resident Action", pos);
+		}
+		ImGui::EndMenu();
+	}
 }
 

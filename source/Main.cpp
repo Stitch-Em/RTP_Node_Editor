@@ -28,6 +28,19 @@ ImTextureID LoadTexture(const char* path)
 
 int main()
 {
+    std::vector<std::string> pinataNames;
+
+    std::ifstream file("Pinata.csv");
+    std::string line;
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string pinata;
+        if (std::getline(ss, pinata, ',')) {
+            pinataNames.push_back(pinata);
+        }
+    }
+	int currentPinata = -1;
+
     if (!glfwInit()) return -1;
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -42,9 +55,11 @@ int main()
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    ImFont* customFont = io.Fonts->AddFontFromFileTTF("Ancientsans-rvyrK.ttf", 18.0f);
+    ImFont* customFont = io.Fonts->AddFontFromFileTTF("Ancientsans-rvyrK.ttf", 64.0f);
     if (!customFont)
         std::cerr << "Failed to load custom font!\n";
+    io.FontDefault = customFont;
+    io.FontGlobalScale = 0.25f;
 
     io.FontDefault = customFont;
 
@@ -56,93 +71,101 @@ int main()
     g_HeaderTexture = LoadTexture("Data/BlueprintBackground.png");
     editor = ed::CreateEditor();
 
-	// --- Demo Nodes --- (Replace with load from file eventually), Locations wont save with a rand() ID so we maunally set them
-    {
-        nodes.push_back(new Node_GetItem(1));
-        nodes.push_back(new Node_Int(2));
-        nodes.push_back(new Node_GetPinata(3));
-		nodes.push_back(new Node_PinatasAteRequirement(4));
-		nodes.push_back(new Node_ItemsAteRequirement(5));
-		nodes.push_back(new Node_PinatasInGardenRequirement(6));
-		nodes.push_back(new Node_ItemsInGardenRequirement(7));
-		nodes.push_back(new Node_RomanceAction(8));
-		nodes.push_back(new Node_PinataRoot(9));
-		nodes.push_back(new Node_VisitAction(10));
-		nodes.push_back(new Node_VariantAction(11));
-		nodes.push_back(new Node_AppearAction(12));
-		nodes.push_back(new Node_ResidentAction(13));
-    }
-
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-        DrawGraph();
 
-        ImGui::Begin("Details");
-
-        if (selectedNodeId) {
-            auto it = std::find_if(nodes.begin(), nodes.end(), [&](Node* n) {
-                return n->ID == selectedNodeId;
-                });
-
-            if (it != nodes.end()) {
-                Node* node = *it;
-                ImGui::Text("Node: %s", node->Name.c_str());
-
-                node->RenderDetails();
-            }
+		if (currentPinata == -1) {
+			ImGui::Begin("Pinata");
+			//center the text
+			
+			ImGui::Text("Select A Pinata");
+			if (ImGui::BeginCombo("Pinata", pinataNames[currentPinata].c_str())) {
+				for (int i = 0; i < pinataNames.size(); ++i) {
+					bool isSelected = (currentPinata == i);
+					if (ImGui::Selectable(pinataNames[i].c_str(), isSelected)) {
+						currentPinata = i;
+					}
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::End();
         }
         else {
-            ImGui::Text("No node selected");
+            DrawGraph();
+
+            ImGui::Begin("Details");
+
+            if (selectedNodeId) {
+                auto it = std::find_if(nodes.begin(), nodes.end(), [&](Node* n) {
+                    return n->ID == selectedNodeId;
+                    });
+
+                if (it != nodes.end()) {
+                    Node* node = *it;
+                    ImGui::Text("Node: %s", node->Name.c_str());
+
+                    node->RenderDetails();
+                }
+            }
+            else {
+                ImGui::Text("No node selected");
+            }
+
+            ImGui::End();
+
+
+
+            ImGui::Begin("Debug Window");
+            if (ImGui::Button("Save")) {
+                SaveFile("Test.json");
+            }
+            if (ImGui::Button("Load")) {
+                if (DoesSaveExist("Test.json")) {
+                    LoadFile("Test.json");
+                }
+                else {
+                    std::cerr << "Save file does not exist!" << std::endl;
+                }
+            }
+            //Displays the selected node ID/ Nodes / Links
+            ImGui::Text("Selected Node ID: %d", selectedNodeId.Get());
+            ImGui::Text("Nodes: %d", nodes.size());
+            ImGui::Text("Links: %d", links.size());
+
+            //show canvas location of mouse
+            ImVec2 mousePos = ImGui::GetMousePos();
+            ImVec2 canvasPos = ImGui::GetCursorScreenPos();
+            ImVec2 canvasSize = ImGui::GetContentRegionAvail();
+            ImVec2 relativeMousePos = ImVec2(mousePos.x - canvasPos.x, mousePos.y - canvasPos.y);
+            ImGui::Text("Mouse Position: (%.1f, %.1f)", mousePos.x, mousePos.y);
+            ImGui::Text("Canvas Position: (%.1f, %.1f)", canvasPos.x, canvasPos.y);
+            ImGui::Text("Canvas Size: (%.1f, %.1f)", canvasSize.x, canvasSize.y);
+            ImGui::Text("Relative Mouse Position: (%.1f, %.1f)", relativeMousePos.x, relativeMousePos.y);
+
+
+            for (auto& node : nodes) {
+                ImGui::Text("Node ID: %d", node->ID.Get());
+                ImGui::Text("Node Name: %s", node->Name.c_str());
+            }
+            for (auto& link : links) {
+                ImGui::Text("Link ID: %d", link.ID.Get());
+                ImGui::Text("From: %d", link.From.Get());
+                ImGui::Text("To: %d", link.To.Get());
+            }
+
+            ImGui::End();
+
+
         }
 
-        ImGui::End();
-
-
-
-		ImGui::Begin("Debug Window");
-		if (ImGui::Button("Save")) {
-			SaveFile("Test.json");
-		}
-		if (ImGui::Button("Load")) {
-			if (DoesSaveExist("Test.json")) {
-				LoadFile("Test.json");
-			}
-			else {
-				std::cerr << "Save file does not exist!" << std::endl;
-			}
-		}
-		//Displays the selected node ID/ Nodes / Links
-		ImGui::Text("Selected Node ID: %d", selectedNodeId.Get());
-		ImGui::Text("Nodes: %d", nodes.size());
-		ImGui::Text("Links: %d", links.size());
-
-        //show canvas location of mouse
-		ImVec2 mousePos = ImGui::GetMousePos();
-		ImVec2 canvasPos = ImGui::GetCursorScreenPos();
-		ImVec2 canvasSize = ImGui::GetContentRegionAvail();
-		ImVec2 relativeMousePos = ImVec2(mousePos.x - canvasPos.x, mousePos.y - canvasPos.y);
-		ImGui::Text("Mouse Position: (%.1f, %.1f)", mousePos.x, mousePos.y);
-		ImGui::Text("Canvas Position: (%.1f, %.1f)", canvasPos.x, canvasPos.y);
-		ImGui::Text("Canvas Size: (%.1f, %.1f)", canvasSize.x, canvasSize.y);
-		ImGui::Text("Relative Mouse Position: (%.1f, %.1f)", relativeMousePos.x, relativeMousePos.y);
-
-
-        for (auto& node : nodes) {
-            ImGui::Text("Node ID: %d", node->ID.Get());
-            ImGui::Text("Node Name: %s", node->Name.c_str());
-        }
-        for (auto& link : links) {
-            ImGui::Text("Link ID: %d", link.ID.Get());
-            ImGui::Text("From: %d", link.From.Get());
-            ImGui::Text("To: %d", link.To.Get());
-        }
-
-		ImGui::End();
-
+        
 
         ImGui::Render();
         int w, h;

@@ -1,6 +1,6 @@
 workspace "RTP_Node_Editor"
     architecture "x64"
-    configurations { "Release" }
+    configurations { "Release", "Debug" }
     startproject "RTP_Node_Editor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -75,3 +75,8 @@ project "RTP_Node_Editor"
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "On"
+
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+        optimize "Off"
