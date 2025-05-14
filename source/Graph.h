@@ -16,11 +16,42 @@ namespace util = ax::NodeEditor::Utilities;
 
 #include <string>
 #include <vector>
-#include <unordered_map>
 #include <algorithm>
 #include <random>
+#include <iostream>
 
 class Node; // Forward declaration
+
+enum class PinKind { Output, Input };
+enum class PinType { Item, Pinata, Int, Float, Requirement, Action };
+
+struct Pin {
+    ed::PinId ID;
+    Node* Node;
+    std::string Name;
+    PinType Type;
+    PinKind Kind;
+    int Num = 1; // If num -1 then you can attach multible to one
+
+    Pin(int id, const char* name, PinType type) :
+        ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input) {
+    }
+};
+
+struct NodeSave {
+
+    ed::NodeId ID;
+    std::string Name;
+    std::vector<Pin> Inputs;
+    std::vector<Pin> Outputs;
+    ImColor Color;
+    std::vector<std::byte> Data; // Additional data for saving
+
+    // zpp_bits serialization support
+    auto members() {
+        return std::tie(ID, Name, Inputs, Outputs, Color, Data);
+    }
+};
 
 struct Link {
     ed::LinkId ID;
@@ -31,3 +62,42 @@ struct Link {
 inline std::vector<Node*> nodes;
 inline std::vector<Link> links;
 inline ed::NodeId selectedNodeId;
+
+inline ed::EditorContext* editor = nullptr;
+
+Pin* FindPinById(ed::PinId id);
+
+void DrawGraph();
+
+inline static ImVec4 GetPinColor(PinType type) {
+    switch (type) {
+    case PinType::Item:
+        return ImVec4(0.4f, 0.6f, 1.0f, 1.0f);   // Blue-ish
+    case PinType::Pinata:
+        return ImVec4(0.8f, 0.5f, 1.0f, 1.0f);   // Purple
+    case PinType::Int:
+        return ImVec4(1.0f, 0.7f, 0.2f, 1.0f);   // Orange
+    case PinType::Float:
+        return ImVec4(1.0f, 0.6f, 0.4f, 1.0f);   // Light orange
+    case PinType::Requirement:
+        return ImVec4(0.3f, 0.9f, 0.4f, 1.0f);   // Green
+    case PinType::Action:
+        return ImVec4(1.0f, 0.3f, 0.3f, 1.0f);   // Red-ish
+    default:
+        return ImVec4(0.5f, 0.5f, 0.5f, 1.0f);   // Gray fallback
+    }
+}
+
+inline static bool ArePinsCompatible(const Pin& a, const Pin& b)
+{
+    if (a.Kind == b.Kind)
+        return false;
+
+    const Pin& input = (a.Kind == PinKind::Input) ? a : b;
+    const Pin& output = (a.Kind == PinKind::Output) ? a : b;
+
+    if (input.Type == output.Type) {
+        return true;
+    }
+    return false;
+}

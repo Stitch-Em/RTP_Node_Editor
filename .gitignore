@@ -403,3 +403,7 @@ FodyWeavers.xsd
 !Vendors/
 !Vendors/**
 
+*.recipe
+RTP_Node_Editor.vcxproj.filters
+RTP_Node_Editor.vcxproj
+RTP_Node_Editor.sln

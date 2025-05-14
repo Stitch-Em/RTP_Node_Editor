@@ -1,4 +1,4 @@
-﻿#include "NodeHelpers.h"
+﻿
 #include "Graph.h"
 #include "Nodes/Values/GetItem.h"
 #include "Nodes/Values/ConstInt.h"
@@ -12,26 +12,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-// --- Globals ---
-int nextId = 1;
-int GetNextId() { return nextId++; }
-
-ImVec2 nodeSpawnPos;
-ImVec2 deferredNodePos;
-ed::NodeId deferredNodeId;
-
-Pin* FindPin(ed::PinId id)
-{
-    for (auto& node : nodes) {
-        for (auto& pin : node->Inputs)
-            if (pin.ID == id) return &pin;
-        for (auto& pin : node->Outputs)
-            if (pin.ID == id) return &pin;
-    }
-    return nullptr;
-}
-
-ImTextureID Application_LoadTexture(const char* path)
+ImTextureID LoadTexture(const char* path)
 {
     int width, height, channels;
     unsigned char* data = stbi_load(path, &width, &height, &channels, 4);
@@ -52,81 +33,6 @@ ImTextureID Application_LoadTexture(const char* path)
     return (ImTextureID)(intptr_t)textureId;
 }
 
-void DrawGraph()
-{
-    ImGui::Begin("Logic Tree");
-    ed::SetCurrentEditor(editor);
-    ed::Begin("Logic Tree");
-
-    ed::NodeId current;
-    int count = ed::GetSelectedNodes(&current, 1);
-    if (count == 1){
-        selectedNodeId = current;
-    }else {
-        selectedNodeId = ed::NodeId(0); // Clear if nothing is selected
-    }
-
-    for (auto& node : nodes)
-		node->Render();
-
-    for (auto& link : links) {
-        Pin* from = FindPin(link.From);
-        Pin* to = FindPin(link.To);
-
-        // Pick the output pin (for color reference)
-        Pin* colorPin = from && from->Kind == PinKind::Output ? from : to;
-
-        ImVec4 color = GetPinColor(colorPin->Type); // from NodeHelpers.h
-        ed::Link(link.ID, link.From, link.To, color, 2.5f); // thickness optional
-    }
-
-    if (ed::BeginCreate()) {
-        ed::PinId start, end;
-        if (ed::QueryNewLink(&start, &end)) {
-            Pin* a = FindPin(start);
-            Pin* b = FindPin(end);
-
-            if (!a || !b || a == b || !ArePinsCompatible(*a, *b)) {
-                ed::RejectNewItem();
-            }
-            else {
-                Pin* input = (a->Kind == PinKind::Input) ? a : b;
-                Pin* output = (a->Kind == PinKind::Output) ? a : b;
-
-                bool inputAlreadyLinked = std::any_of(links.begin(), links.end(), [&](auto& l) {
-                    return l.To == input->ID;
-                    });
-
-                if (input->Num != -1 && inputAlreadyLinked) {
-                    ed::RejectNewItem();
-                }
-                else if (ed::AcceptNewItem()) {
-                    links.push_back({ ed::LinkId(GetNextId()), output->ID, input->ID });
-                    std::cout << "Created link: " << output->ID.Get() << " -> " << input->ID.Get() << "\n";
-                }
-            }
-        }
-        ed::EndCreate();
-    }
-
-    if (ed::BeginDelete()) {
-        ed::LinkId deleted;
-        while (ed::QueryDeletedLink(&deleted)) {
-            if (ed::AcceptDeletedItem()) {
-                std::cout << "Deleting link: " << deleted.Get() << "\n";
-                links.erase(std::remove_if(links.begin(), links.end(),
-                    [&](auto& l) { return l.ID == deleted; }),
-                    links.end());
-            }
-        }
-        ed::EndDelete();
-    }
-
-    ed::End();
-    ImGui::End(); // End Logic Tree
-
-}
-
 int main()
 {
     if (!glfwInit()) return -1;
@@ -142,26 +48,19 @@ int main()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImFontConfig fontConfig;
-    fontConfig.OversampleH = 2;
-    fontConfig.OversampleV = 2;
-    fontConfig.PixelSnapH = true;
 
-    static const ImWchar glyphRanges[] = {
-        0x0020, 0x00FF, 0x25A0, 0x25FF, 0x2600, 0x26FF, 0x29BE, 0x29BF, 0
-    };
-
-    ImFont* customFont = io.Fonts->AddFontFromFileTTF("Ancientsans-rvyrK.ttf", 18.0f, &fontConfig, glyphRanges);
+    ImFont* customFont = io.Fonts->AddFontFromFileTTF("Ancientsans-rvyrK.ttf", 18.0f);
     if (!customFont)
         std::cerr << "Failed to load custom font!\n";
 
     io.FontDefault = customFont;
+
     ImGui::StyleColorsDark();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    g_HeaderTexture = Application_LoadTexture("Data/BlueprintBackground.png");
+    g_HeaderTexture = LoadTexture("Data/BlueprintBackground.png");
     editor = ed::CreateEditor();
 
     // --- Demo Nodes ---
@@ -173,8 +72,6 @@ int main()
 		nodes.push_back(new Node_ItemRequirement(rand()));
 		nodes.push_back(new Node_RomanceAction(rand()));
 		nodes.push_back(new Node_PinataRoot(rand()));
-
-       
     }
 
     while (!glfwWindowShouldClose(window)) {

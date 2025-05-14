@@ -25,7 +25,6 @@
 # include <map>
 # include <cmath>
 
-#define NOMINMAX
 #include <Windows.h>
 # include <algorithm>
 
