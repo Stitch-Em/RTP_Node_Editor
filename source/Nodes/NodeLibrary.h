@@ -12,6 +12,7 @@
 #include "Actions/VariantAction.h"
 #include "Actions/AppearAction.h"
 #include "Actions/ResidentAction.h"
+#include "Examples/TopDownNode.h"
 
 
 inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = nodes.size() + 1) {
@@ -67,6 +68,10 @@ inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = node
 	}
 	else if (name == "Int") {
 		nodes.push_back(new Node_Int(ID));
+		isValid = true;
+	}
+	else if (name == "Top Down") {
+		nodes.push_back(new Node_TopDown(ID));
 		isValid = true;
 	}
 	else {
@@ -126,6 +131,12 @@ inline void SpawnMenu(ImVec2 pos) {
 		}
 		if (ImGui::MenuItem("Resident Action")) {
 			SpawnNodeFromName("Resident Action", pos);
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("Examples")) {
+		if (ImGui::MenuItem("Top Down")) {
+			SpawnNodeFromName("Top Down", pos);
 		}
 		ImGui::EndMenu();
 	}
