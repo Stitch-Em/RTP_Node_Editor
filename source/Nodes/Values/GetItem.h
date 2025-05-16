@@ -18,7 +18,7 @@ public:
         Outputs.back().Kind = PinKind::Output;
         Outputs.back().Node = this;
 
-        std::ifstream file("Items.csv");
+        std::ifstream file("Data\\Sheets\\Items\\Items.csv");
         std::string line;
         while (std::getline(file, line)) {
             std::stringstream ss(line);

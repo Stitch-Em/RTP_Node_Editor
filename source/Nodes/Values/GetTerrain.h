@@ -18,7 +18,7 @@ public:
 		Data = 0;
 		Data2 = 0;
 
-		std::ifstream file("Areas.csv");
+		std::ifstream file("Data\\Sheets\\Areas\\Areas.csv");
 		std::string line;
 		while (std::getline(file, line)) {
 			std::stringstream ss(line);
@@ -29,7 +29,7 @@ public:
 		}
 
 		// Load the terrain names from the Mainland CSV file
-		std::ifstream file1(std::string("Mainland.csv"));
+		std::ifstream file1(std::string("Data\\Sheets\\Terrain\\Mainland.csv"));
 		std::string line1;
 		while (std::getline(file1, line1)) {
 			std::stringstream ss(line1);
@@ -82,7 +82,7 @@ public:
 					TerrainNames.clear();
 					
 					// Load the terrain names from the corresponding CSV file
-					std::ifstream file(std::string(AreaNames[i] + ".csv"));
+					std::ifstream file(std::string("Data\\Sheets\\Terrain\\" + AreaNames[i] + ".csv"));
 					std::string line;
 					while (std::getline(file, line)) {
 						std::stringstream ss(line);

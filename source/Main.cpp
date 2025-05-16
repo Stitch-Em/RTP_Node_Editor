@@ -29,7 +29,7 @@ int main()
 {
 	std::vector<std::string> pinataNames;
 
-	std::ifstream file("Pinata.csv");
+	std::ifstream file("Data\\Sheets\\Pinata\\Pinata.csv");
 	std::string line;
 	while (std::getline(file, line)) {
 		std::stringstream ss(line);
