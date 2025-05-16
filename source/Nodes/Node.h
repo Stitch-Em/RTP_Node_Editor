@@ -12,6 +12,7 @@ public:
     std::vector<Pin> Outputs;
     ImColor Color;
 	int Data = 0; // Placeholder for node data
+    int Data2 = 0; // Placeholder for node data
 
     Node(int id) : ID(id) {};
 

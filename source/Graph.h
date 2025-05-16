@@ -23,7 +23,7 @@ namespace util = ax::NodeEditor::Utilities;
 class Node; // Forward declaration
 
 enum class PinKind { Output, Input };
-enum class PinType { Item, Pinata, Int, Float, Requirement, Action };
+enum class PinType { Item, Pinata, Accessory, Ground, Int, Float, Requirement, Action };
 
 struct Pin {
     ed::PinId ID;
@@ -31,7 +31,7 @@ struct Pin {
     std::string Name;
     PinType Type;
     PinKind Kind;
-    int Num = 1; // If num -1 then you can attach multible to one
+    int Num = 1; // If num -1 then you can attach multiple to one
 
     Pin(int id, const char* name, PinType type) :
         ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input) {
@@ -77,6 +77,10 @@ inline static ImVec4 GetPinColor(PinType type) {
         return ImVec4(0.3f, 0.9f, 0.4f, 1.0f);   // Green
     case PinType::Action:
         return ImVec4(1.0f, 0.3f, 0.3f, 1.0f);   // Red-ish
+	case PinType::Accessory:
+		return ImVec4(0.9f, 0.3f, 0.9f, 1.0f);   // Pink
+	case PinType::Ground:
+		return ImVec4(0.5f, 0.25f, 0.1f, 1.0f);   // Brown
     default:
         return ImVec4(0.5f, 0.5f, 0.5f, 1.0f);   // Gray fallback
     }

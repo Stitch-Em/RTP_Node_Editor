@@ -1,33 +1,34 @@
 #pragma once
-#include "../Node.h"
+#include "GetItem.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <random>
 
-class Node_GetPinata : public Node
+class Node_GetEgg : public Node_GetItem
 {
 
 
 public:
-    Node_GetPinata(int id) : Node(id) { // Call the base class constructor  
+	Node_GetEgg(int id) : Node_GetItem(id) { // Call the base class constructor  
 		ID = id;
-		Name = "Get Pinata";
+		Name = "Get Egg";
 		Color = ImColor(150, 200, 255, 150);
-		Outputs.emplace_back(rand(), "Pinata", PinType::Pinata);
+		Outputs.emplace_back(rand(), "Egg", PinType::Item);
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Node = this;
 
-        std::ifstream file("Pinata.csv");
-        std::string line;
-        while (std::getline(file, line)) {
-            std::stringstream ss(line);
-            std::string pinata;
-            if (std::getline(ss, pinata, ',')) {
-                pinataNames.push_back(pinata);
-            }
-        }
-    }
+		std::ifstream file("Pinata.csv");
+		std::string line;
+		while (std::getline(file, line)) {
+			std::stringstream ss(line);
+			std::string pinata;
+			if (std::getline(ss, pinata, ',')) {
+				pinata = pinata + " Egg";
+				pinataNames.push_back(pinata);
+			}
+		}
+	}
 
 	void Render() {
 		util::BlueprintNodeBuilder builder(g_HeaderTexture, 128, 128);
@@ -77,5 +78,5 @@ public:
 	}
 
 private:
-    std::vector<std::string> pinataNames;
+	std::vector<std::string> pinataNames;
 };

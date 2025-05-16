@@ -1,56 +1,50 @@
 #pragma once
 #include "../Node.h"
-#include "../Requirements/TerrainInGardenRequirement.h"
+#include "../Values/GetAccessory.h"
 #include <random>
 
 
-class Node_RomanceAction : public Node
+class Node_HasAccessoryRequirement : public Node
 {
 public:
-    Node_RomanceAction(int id) : Node(id) { // Call the base class constructor  
+	Node_HasAccessoryRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
-		Name = "Romance Action";
-		Color = ImColor(255, 64, 180, 255);
-		Inputs.emplace_back(rand(), "Requirements", PinType::Requirement);
-		Inputs.back().Num = -1; // Allow multiple connections
+		Name = "Has Assessory";
+		Color = ImColor(77, 229, 102, 150);
+		Inputs.emplace_back(rand(), "Accessory", PinType::Accessory);
+		Inputs.back().Kind = PinKind::Input;
 		Inputs.back().Node = this;
-		Outputs.emplace_back(rand(), "Action", PinType::Action);
+		Outputs.emplace_back(rand(), "Requirement", PinType::Requirement);
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Node = this;
-    }
+	}
 
 	void Render() override {
+		Node* connectedNode2 = GetConnectedNode(Inputs[0], links, nodes);
+		Node_GetAccessory* intNode = dynamic_cast<Node_GetAccessory*>(connectedNode2);
+
+		bool isValid = intNode != nullptr;
+
 		util::BlueprintNodeBuilder builder(g_HeaderTexture, 128, 128);
 		builder.Begin(ID);
 		float pinStartX = ImGui::GetCursorPosX();
 
-		//Dont allow Terrain Requirements
-		bool isValid = true;
-		for (auto& input : Inputs) {
-			//find the connected node
-			Node* connectedNode = GetConnectedNode(input, links, nodes);
-			Node_TerrainInGardenRequirement* terrainNode = dynamic_cast<Node_TerrainInGardenRequirement*>(connectedNode);
-			if (terrainNode != nullptr) {
-				isValid = false;
-				break;
-			}
-		}
-
+		// Header with node-specific color
 		if (isValid) {
 			builder.Header(Color);
 			ImGui::TextUnformatted(Name.c_str());
-			builder.EndHeader();
 		}
 		else {
 			builder.Header(ImColor(255, 0, 0, 150)); // Red color for invalid
 			ImGui::TextUnformatted(Name.c_str());
-			ImGui::Text("Terrain Requirement not allowed");
-			builder.EndHeader();
-			
+			ImGui::Text("Invalid Node");
 		}
+		builder.EndHeader();
 
-		
+
 		ImGui::SetCursorPosX(pinStartX);
+
+
 		for (auto& input : Inputs) {
 			builder.Input(input.ID);
 			ImGui::PushStyleColor(ImGuiCol_Text, GetPinColor(input.Type));
@@ -58,6 +52,7 @@ public:
 			ImGui::PopStyleColor();
 			builder.EndInput();
 		}
+
 		for (auto& output : Outputs) {
 			builder.Output(output.ID);
 			ImGui::PushStyleColor(ImGuiCol_Text, GetPinColor(output.Type));
@@ -71,12 +66,16 @@ public:
 
 	void RenderDetails() override
 	{
-		Node* connectedNode = GetConnectedNode(Inputs[0], links, nodes);
-		Node_GetPinata* pinataNode = dynamic_cast<Node_GetPinata*>(connectedNode);
-		if (pinataNode == nullptr) {
+		Node* connectedNode2 = GetConnectedNode(Inputs[0], links, nodes);
+		Node_GetAccessory* intNode = dynamic_cast<Node_GetAccessory*>(connectedNode2);
+
+		if (intNode == nullptr) {
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-			ImGui::TextWrapped("Terrain Requirement not allowed This is due to the fact that you can have houses in trap areas");
+			ImGui::Text("GetAccessory node disconnected from Has Accessory");
 			ImGui::PopStyleColor();
+		}
+		else {
+			intNode->RenderDetails();
 		}
 	}
 };

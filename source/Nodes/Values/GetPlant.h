@@ -1,20 +1,17 @@
 #pragma once
-#include "../Node.h"
-#include <filesystem>
-#include <iostream>
-#include <fstream>
+#include "GetItem.h"
 #include <random>
 
-class Node_GetPinata : public Node
+class Node_GetPlant : public Node_GetItem
 {
 
 
 public:
-    Node_GetPinata(int id) : Node(id) { // Call the base class constructor  
+    Node_GetPlant(int id) : Node_GetItem(id) { // Call the base class constructor  
 		ID = id;
-		Name = "Get Pinata";
+		Name = "Get Plant";
 		Color = ImColor(150, 200, 255, 150);
-		Outputs.emplace_back(rand(), "Pinata", PinType::Pinata);
+		Outputs.emplace_back(rand(), "Plant", PinType::Item);
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Node = this;
 

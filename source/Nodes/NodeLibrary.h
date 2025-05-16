@@ -13,6 +13,16 @@
 #include "Actions/AppearAction.h"
 #include "Actions/ResidentAction.h"
 #include "Examples/TopDownNode.h"
+#include "Requirements/HasAccessoryRequirement.h"
+#include "Requirements/TerrainInGardenRequirement.h"
+#include "Requirements/LoseAFightRequirement.h"
+#include "Requirements/WinAFightRequirement.h"
+#include "Requirements/GardenValueRequirement.h"
+#include "Values/GetAccessory.h"
+#include "Values/GetTerrain.h"
+#include "Values/GetPlant.h"
+#include "Values/GetHouse.h"
+#include "Values/GetEgg.h"
 
 
 inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = nodes.size() + 1) {
@@ -74,6 +84,46 @@ inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = node
 		nodes.push_back(new Node_TopDown(ID));
 		isValid = true;
 	}
+	else if (name == "Get Accessory") {
+		nodes.push_back(new Node_GetAccessory(ID));
+		isValid = true;
+	}
+	else if (name == "Get Terrain") {
+		nodes.push_back(new Node_GetTerrain(ID));
+		isValid = true;
+	}
+	else if (name == "Get Plant") {
+		nodes.push_back(new Node_GetPlant(ID));
+		isValid = true;
+	}
+	else if (name == "Has Accessory") {
+		nodes.push_back(new Node_HasAccessoryRequirement(ID));
+		isValid = true;
+	}
+	else if (name == "Lost A Fight") {
+		nodes.push_back(new Node_LoseAFightRequirement(ID));
+		isValid = true;
+	}
+	else if (name == "Win A Fight") {
+		nodes.push_back(new Node_WinAFightRequirement(ID));
+		isValid = true;
+	}
+	else if (name == "Garden Value") {
+		nodes.push_back(new Node_GardenValueRequirement(ID));
+		isValid = true;
+	}
+	else if (name == "Terrain In Garden") {
+		nodes.push_back(new Node_TerrainInGardenRequirement(ID));
+		isValid = true;
+	}
+	else if (name == "Get House") {
+		nodes.push_back(new Node_GetHouse(ID));
+		isValid = true;
+	}
+	else if (name == "Get Egg") {
+		nodes.push_back(new Node_GetEgg(ID));
+		isValid = true;
+	}
 	else {
 		std::cerr << "Node type not recognized: " << name << std::endl;
 	}
@@ -94,6 +144,21 @@ inline void SpawnMenu(ImVec2 pos) {
 		if (ImGui::MenuItem("Get Pinata")) {
 			SpawnNodeFromName("Get Pinata", pos);
 		}
+		if (ImGui::MenuItem("Get Accessory")) {
+			SpawnNodeFromName("Get Accessory", pos);
+		}
+		if (ImGui::MenuItem("Get Terrain")) {
+			SpawnNodeFromName("Get Terrain", pos);
+		}
+		if (ImGui::MenuItem("Get Plant")) {
+			SpawnNodeFromName("Get Plant", pos);
+		}
+		if (ImGui::MenuItem("Get House")) {
+			SpawnNodeFromName("Get House", pos);
+		}
+		if (ImGui::MenuItem("Get Egg")) {
+			SpawnNodeFromName("Get Egg", pos);
+		}
 		if (ImGui::MenuItem("Int")) {
 			SpawnNodeFromName("Int", pos);
 		}
@@ -112,6 +177,21 @@ inline void SpawnMenu(ImVec2 pos) {
 		}
 		if (ImGui::MenuItem("Pinatas In Garden")) {
 			SpawnNodeFromName("Pinatas In Garden", pos);
+		}
+		if (ImGui::MenuItem("Has Accessory")) {
+			SpawnNodeFromName("Has Accessory", pos);
+		}
+		if (ImGui::MenuItem("Lost A Fight")) {
+			SpawnNodeFromName("Lost A Fight", pos);
+		}
+		if (ImGui::MenuItem("Win A Fight")) {
+			SpawnNodeFromName("Win A Fight", pos);
+		}
+		if (ImGui::MenuItem("Garden Value")) {
+			SpawnNodeFromName("Garden Value", pos);
+		}
+		if (ImGui::MenuItem("Terrain In Garden")) {
+			SpawnNodeFromName("Terrain In Garden", pos);
 		}
 		ImGui::EndMenu();
 	}

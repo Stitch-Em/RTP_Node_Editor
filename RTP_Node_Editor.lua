@@ -29,6 +29,7 @@ project "RTP_Node_Editor"
         "vendors/Imgui/**.cpp",
         "vendors/gl3w/Source/**.c",
         "vendors/json/**.hpp",
+        "vendors/csv/**.h"
 
     }
 
@@ -39,7 +40,8 @@ project "RTP_Node_Editor"
         "vendors/stb_image",
         "vendors/ImGui-Nodes/NodeEditor/Include",
         "vendors/ImGui-Nodes/Examples/Common/BlueprintUtilities/Include",
-        "vendors/json"
+        "vendors/json",
+        "venders/csv"
     }
 
     -- Organize files under a filter called "ImGui" "stb_image"
@@ -50,6 +52,7 @@ project "RTP_Node_Editor"
         ["Vendors/BlueprintUtilities/*"] = { "vendors/ImGui-Nodes/Examples/Common/BlueprintUtilities/Source/**.h", "vendors/ImGui-Nodes/Examples/Common/BlueprintUtilities/Source/**.cpp" },
         ["Vendors/gl3w/*"] = { "vendors/gl3w/Source/**.c" },
         ["Vendors/json/*"] = { "vendors/json/**.hpp" },
+        ["Vendors/csv/*"] = { "vendors/csv/**.h" },
         ["Source/*"] = { "source/**.h", "source/**.cpp" }
 
     }
