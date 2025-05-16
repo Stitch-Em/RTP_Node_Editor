@@ -573,7 +573,7 @@ void transform_points(const M& m, basic_point<T>* points, size_t count);
 template <typename M, typename T>
 inline void transform_points(const M& m, basic_point<T>* points, size_t count)
 {
-    static_assert(false, "This combination of matrix type and point type is not supported");
+    //static_assert(false, "This combination of matrix type and point type is not supported");
 }
 # endif
 

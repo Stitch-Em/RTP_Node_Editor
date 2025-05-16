@@ -407,3 +407,5 @@ FodyWeavers.xsd
 RTP_Node_Editor.vcxproj.filters
 RTP_Node_Editor.vcxproj
 RTP_Node_Editor.sln
+*.idb
+bin-int/Debug-windows-x86_64/RTP_Node_Editor/vc143.idb
