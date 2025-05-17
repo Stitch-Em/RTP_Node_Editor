@@ -29,7 +29,9 @@ project "RTP_Node_Editor"
         "vendors/Imgui/**.cpp",
         "vendors/gl3w/Source/**.c",
         "vendors/json/**.hpp",
-        "vendors/csv/**.h"
+        "vendors/csv/**.h",
+        "vendors/curl/include/**.h",
+        "vendors/curl/include/**.cpp",
 
     }
 
@@ -41,7 +43,8 @@ project "RTP_Node_Editor"
         "vendors/ImGui-Nodes/NodeEditor/Include",
         "vendors/ImGui-Nodes/Examples/Common/BlueprintUtilities/Include",
         "vendors/json",
-        "venders/csv"
+        "venders/csv",
+        "vendors/curl/include"
     }
 
     -- Organize files under a filter called "ImGui" "stb_image"
@@ -53,17 +56,25 @@ project "RTP_Node_Editor"
         ["Vendors/gl3w/*"] = { "vendors/gl3w/Source/**.c" },
         ["Vendors/json/*"] = { "vendors/json/**.hpp" },
         ["Vendors/csv/*"] = { "vendors/csv/**.h" },
+        ["Vendors/curl/*"] = { "vendors/curl/include/**.h", "vendors/curl/include/**.cpp" },
         ["Source/*"] = { "source/**.h", "source/**.cpp" }
 
     }
 
     libdirs {
-        "vendors/GLFW/lib"
+        "vendors/GLFW/lib",
+        "vendors/curl/lib"
     }
 
     links {
         "glfw3",
-        "opengl32.lib"
+        "opengl32.lib",
+        "libcurl_a.lib",
+        "ws2_32.lib",
+        "wldap32.lib",
+        "advapi32.lib",
+        "crypt32.lib",
+        "normaliz.lib"
     }
 
     defines {

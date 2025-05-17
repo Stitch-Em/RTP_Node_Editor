@@ -18,26 +18,8 @@ public:
 		Data = 0;
 		Data2 = 0;
 
-		std::ifstream file("Data\\Sheets\\Areas\\Areas.csv");
-		std::string line;
-		while (std::getline(file, line)) {
-			std::stringstream ss(line);
-			std::string pinata;
-			if (std::getline(ss, pinata, ',')) {
-				AreaNames.push_back(pinata);
-			}
-		}
-
-		// Load the terrain names from the Mainland CSV file
-		std::ifstream file1(std::string("Data\\Sheets\\Terrain\\Mainland.csv"));
-		std::string line1;
-		while (std::getline(file1, line1)) {
-			std::stringstream ss(line1);
-			std::string pinata;
-			if (std::getline(ss, pinata, ',')) {
-				TerrainNames.push_back(pinata);
-			}
-		}
+		AreaNames = csv::Load("Areas", 0);
+		TerrainNames = csv::Load("Mainland", 0);
     }
 
 	void Render() {
@@ -81,16 +63,7 @@ public:
 					// Clear the previous terrain names
 					TerrainNames.clear();
 					
-					// Load the terrain names from the corresponding CSV file
-					std::ifstream file(std::string("Data\\Sheets\\Terrain\\" + AreaNames[i] + ".csv"));
-					std::string line;
-					while (std::getline(file, line)) {
-						std::stringstream ss(line);
-						std::string pinata;
-						if (std::getline(ss, pinata, ',')) {
-							TerrainNames.push_back(pinata);
-						}
-					}
+					TerrainNames = csv::Load(AreaNames[i], 0);
 
 					Data2 = 0; // Reset Data to the first terrain
 				}

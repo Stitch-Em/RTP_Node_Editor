@@ -18,16 +18,10 @@ public:
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Node = this;
 
-        std::ifstream file("Data\\Sheets\\Pinata\\Pinata.csv");
-        std::string line;
-        while (std::getline(file, line)) {
-            std::stringstream ss(line);
-			std::string pinata;
-            if (std::getline(ss, pinata, ',')) {
-				pinata = pinata + " House";
-                pinataNames.push_back(pinata);
-            }
-        }
+		pinataNames = csv::Load("Pinatas", 0);
+		for (auto& pinata : pinataNames) {
+			pinata = pinata + " House";
+		}
     }
 
 	void Render() {

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Graph.h"
+#include "../Saving/CSV-Loader.h"
 
 inline ImTextureID g_HeaderTexture; // define and assign this once, like `s_HeaderBackground`
 
@@ -11,8 +12,11 @@ public:
     std::vector<Pin> Inputs;
     std::vector<Pin> Outputs;
     ImColor Color;
+
 	int Data = 0; // Placeholder for node data
     int Data2 = 0; // Placeholder for node data
+	std::string DataString; // Placeholder for node data
+	std::string DataString2; // Placeholder for node data
 
     Node(int id) : ID(id) {};
 

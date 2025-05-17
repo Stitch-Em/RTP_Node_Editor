@@ -14,23 +14,18 @@ public:
 		ID = id;
 		Name = "Get Egg";
 		Color = ImColor(150, 200, 255, 150);
+		Outputs.clear();
 		Outputs.emplace_back(rand(), "Egg", PinType::Item);
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Node = this;
 
-		std::ifstream file("Data\\Sheets\\Pinata\\Pinata.csv");
-		std::string line;
-		while (std::getline(file, line)) {
-			std::stringstream ss(line);
-			std::string pinata;
-			if (std::getline(ss, pinata, ',')) {
-				pinata = pinata + " Egg";
-				pinataNames.push_back(pinata);
-			}
+		pinataNames = csv::Load("Pinatas", 0);
+		for (auto& pinata : pinataNames) {
+			pinata = pinata + " Egg";
 		}
 	}
 
-	void Render() {
+	void Render() override {
 		util::BlueprintNodeBuilder builder(g_HeaderTexture, 128, 128);
 		builder.Begin(ID);
 		float pinStartX = ImGui::GetCursorPosX();
