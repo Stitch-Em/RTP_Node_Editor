@@ -79,7 +79,8 @@ project "RTP_Node_Editor"
 
     defines {
         "GLFW_STATIC",
-        "NOMINMAX"
+        "NOMINMAX",
+        "CURL_STATICLIB"
     }
 
     filter "system:windows"
