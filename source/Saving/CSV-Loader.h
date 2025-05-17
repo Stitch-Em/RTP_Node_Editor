@@ -119,43 +119,43 @@ inline static int download(const GoogleDriveCSV& csv)
 inline static GoogleDriveCSV NameToCSV(std::string Name) {
 	GoogleDriveCSV csv;
 	if (Name == "Pinatas") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1aDNqIG20d9SmkZbNmC2aXLRLQkQv_o7VF3wBTgdVj24/edit?gid=0#gid=0";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1aDNqIG20d9SmkZbNmC2aXLRLQkQv_o7VF3wBTgdVj24/export?format=csv&gid=0";
 		csv.DownloadPath = "Data\\Sheets\\Pinata\\Pinata.csv";
 	}
 	else if (Name == "Items") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1WVXzygv90DXesOcSY4VYa7jxFyLSHaZNUJKSryXlIu0/edit?gid=0#gid=0";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1WVXzygv90DXesOcSY4VYa7jxFyLSHaZNUJKSryXlIu0/export?format=csv&gid=0";
 		csv.DownloadPath = "Data\\Sheets\\Items\\Items.csv";
 	}
 	else if (Name == "Areas") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1u8JaVB85Y7yddWttgP13swhsC_StUIsEUUpXcjKajqE/edit?gid=0#gid=0";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1u8JaVB85Y7yddWttgP13swhsC_StUIsEUUpXcjKajqE/export?format=csv&gid=0";
 		csv.DownloadPath = "Data\\Sheets\\Areas\\Areas.csv";
 	}
 	else if (Name == "Mainland") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=273423548#gid=273423548";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=273423548";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Mainland.csv";
 	}
 	else if (Name == "Arctic") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=0#gid=0";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=0";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Arctic.csv";
 	}
 	else if (Name == "Desert") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=2118371872#gid=2118371872";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=2118371872";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Desert.csv";
 	}
 	else if (Name == "Fresh-Water") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=1340074649#gid=1340074649";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=1340074649";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Fresh-Water.csv";
 	}
 	else if (Name == "Jungle") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=998770695#gid=998770695";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=998770695";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Jungle.csv";
 	}
 	else if (Name == "Ocean") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=1776671493#gid=1776671493";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=1776671493";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Ocean.csv";
 	}
 	else if (Name == "Trench-Abyss") {
-		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/edit?gid=1424423500#gid=1424423500";
+		csv.Link = "https://docs.google.com/spreadsheets/d/1APwml4ieV2fQPjtr7BMaeHFGpGEZLoxmrfRw6cNcxbc/export?format=csv&gid=1424423500";
 		csv.DownloadPath = "Data\\Sheets\\Terrain\\Trench-Abyss.csv";
 	}
 
