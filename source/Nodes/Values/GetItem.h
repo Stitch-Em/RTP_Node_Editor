@@ -13,6 +13,7 @@ public:
     Node_GetItem(int id) : Node(id) { // Call the base class constructor  
         ID = id;
         Name = "Get Item";
+		UniqueName = Name;
         Color = ImColor(150, 200, 255, 150);
         Outputs.emplace_back(rand(), "Item", PinType::Item);
         Outputs.back().Kind = PinKind::Output;
@@ -70,6 +71,6 @@ public:
 	}
 
 private:
-    std::vector<std::string> itemNames;
+	std::vector<std::string> itemNames;
 
 };

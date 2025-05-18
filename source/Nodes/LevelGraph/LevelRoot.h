@@ -3,22 +3,18 @@
 #include <random>
 #include <imgui_internal.h>
 
-class Node_TopDown : public Node
+class Node_LevelRoot : public Node
 {
 public:
-	Node_TopDown(int id) : Node(id) { // Call the base class constructor
+	Node_LevelRoot(int id) : Node(id) { // Call the base class constructor
 		ID = id;
-		Name = "Top Down";
+		Name = "Level Root";
 		UniqueName = Name;
-		Color = ImColor(100, 100, 255, 150);
-		Outputs.emplace_back(rand(), "Output", PinType::Action);
+		Color = ImColor(255, 120, 120, 150);
+		Outputs.emplace_back(rand(), "Unlocks", PinType::Action);
 		Outputs.back().Node = this;
 		Outputs.back().Kind = PinKind::Output;
 		Outputs.back().Num = -1; // Allow multiple connections
-		Inputs.emplace_back(rand(), "Input", PinType::Action);
-		Inputs.back().Node = this;
-		Inputs.back().Kind = PinKind::Input;
-		Inputs.back().Num = -1; // Allow multiple connections
 	}
 
 	void Render() override
@@ -27,10 +23,12 @@ public:
 		const float rounding = 5.0f;
 		const float padding = 12.0f;
 
-		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(128, 128, 255, 200));
-		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(32, 32, 32, 200));
-		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 180, 255, 150));
-		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(60, 180, 255, 150));
+		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(220, 40, 40, 200));         // Strong red background
+		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(140, 20, 20, 220));     // Deep red border
+		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(240, 60, 60, 180));        // Bright red pin
+		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(180, 30, 30, 200));  // Darker red pin border
+
+
 
 		ed::PushStyleVar(ed::StyleVar_NodePadding, ImVec4(0, 0, 0, 0));
 		ed::PushStyleVar(ed::StyleVar_NodeRounding, rounding);
@@ -115,7 +113,7 @@ public:
 		ImGui::EndHorizontal();
 
 		auto* drawList = ed::GetNodeBackgroundDrawList(ID);
-		ImColor pinBarColor = ImColor(60, 180, 255, 150);
+		ImColor pinBarColor = ImColor(140, 20, 20, 220);
 		float pinBarRounding = 4.0f;
 
 		if (drawList)

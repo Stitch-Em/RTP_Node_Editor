@@ -10,6 +10,7 @@ public:
     Node_Int(int id) : Node(id) { // Call the base class constructor  
         ID = id;
         Name = "Int";
+        UniqueName = Name;
         Color = ImColor(200, 120, 0, 150);
 		Outputs.emplace_back(rand(), "Int", PinType::Int);
 		Outputs.back().Kind = PinKind::Output;

@@ -11,6 +11,7 @@ public:
 	Node_GardenValueRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Garden Value";
+		UniqueName = Name;
 		Color = ImColor(77, 229, 102, 150);
 		Inputs.emplace_back(rand(), "Value", PinType::Int);
 		Inputs.back().Kind = PinKind::Input;

@@ -10,6 +10,7 @@ public:
     Node_GetPlant(int id) : Node_GetItem(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Get Plant";
+		UniqueName = Name;
 		Color = ImColor(150, 200, 255, 150);
 		Outputs.emplace_back(rand(), "Plant", PinType::Item);
 		Outputs.back().Kind = PinKind::Output;

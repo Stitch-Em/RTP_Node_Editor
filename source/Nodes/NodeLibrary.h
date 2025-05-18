@@ -23,7 +23,9 @@
 #include "Values/GetPlant.h"
 #include "Values/GetHouse.h"
 #include "Values/GetEgg.h"
-
+#include "LevelGraph/LevelRoot.h"
+#include "LevelGraph/PinataDefinition.h"
+#include "LevelGraph/ItemDefinition.h"
 
 inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = nodes.size() + 1) {
 	bool isValid = false;
@@ -124,6 +126,18 @@ inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = node
 		nodes.push_back(new Node_GetEgg(ID));
 		isValid = true;
 	}
+	else if (name == "Level Root") {
+		nodes.push_back(new Node_LevelRoot(ID));
+		isValid = true;
+	}
+	else if (name == "Item List") {
+		nodes.push_back(new Node_ItemDefinition(ID));
+		isValid = true;
+	}
+	else if (name == "PinataDefinition") {
+		nodes.push_back(new Node_PinataDefinition(ID));
+		isValid = true;
+		}
 	else {
 		std::cerr << "Node type not recognized: " << name << std::endl;
 	}
@@ -136,89 +150,106 @@ inline bool SpawnNodeFromName(const std::string& name, ImVec2 pos, int ID = node
 }
 
 inline void SpawnMenu(ImVec2 pos) {
-
-	if (ImGui::BeginMenu("Values")) {
-		if (ImGui::MenuItem("Get Item")) {
-			SpawnNodeFromName("Get Item", pos);
+	if (currentGraph == GraphType::Level) {
+		if (ImGui::BeginMenu("Level")) {
+			if (ImGui::MenuItem("Level Root")) {
+				SpawnNodeFromName("Level Root", pos);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Get Pinata")) {
-			SpawnNodeFromName("Get Pinata", pos);
+		if (ImGui::BeginMenu("Definitions")) {
+			if (ImGui::MenuItem("Pinata")) {
+				SpawnNodeFromName("PinataDefinition", pos);
+			}
+			if (ImGui::MenuItem("Item List")) {
+				SpawnNodeFromName("Item List", pos);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Get Accessory")) {
-			SpawnNodeFromName("Get Accessory", pos);
-		}
-		if (ImGui::MenuItem("Get Terrain")) {
-			SpawnNodeFromName("Get Terrain", pos);
-		}
-		if (ImGui::MenuItem("Get Plant")) {
-			SpawnNodeFromName("Get Plant", pos);
-		}
-		if (ImGui::MenuItem("Get House")) {
-			SpawnNodeFromName("Get House", pos);
-		}
-		if (ImGui::MenuItem("Get Egg")) {
-			SpawnNodeFromName("Get Egg", pos);
-		}
-		if (ImGui::MenuItem("Int")) {
-			SpawnNodeFromName("Int", pos);
-		}
-		ImGui::EndMenu();
 	}
+	else {
+		if (ImGui::BeginMenu("Values")) {
+			if (ImGui::MenuItem("Get Item")) {
+				SpawnNodeFromName("Get Item", pos);
+			}
+			if (ImGui::MenuItem("Get Pinata")) {
+				SpawnNodeFromName("Get Pinata", pos);
+			}
+			if (ImGui::MenuItem("Get Accessory")) {
+				SpawnNodeFromName("Get Accessory", pos);
+			}
+			if (ImGui::MenuItem("Get Terrain")) {
+				SpawnNodeFromName("Get Terrain", pos);
+			}
+			if (ImGui::MenuItem("Get Plant")) {
+				SpawnNodeFromName("Get Plant", pos);
+			}
+			if (ImGui::MenuItem("Get House")) {
+				SpawnNodeFromName("Get House", pos);
+			}
+			if (ImGui::MenuItem("Get Egg")) {
+				SpawnNodeFromName("Get Egg", pos);
+			}
+			if (ImGui::MenuItem("Int")) {
+				SpawnNodeFromName("Int", pos);
+			}
+			ImGui::EndMenu();
+		}
 
-	if (ImGui::BeginMenu("Requirements")) {
-		if (ImGui::MenuItem("Items Ate")) {
-			SpawnNodeFromName("Items Ate", pos);
+		if (ImGui::BeginMenu("Requirements")) {
+			if (ImGui::MenuItem("Items Ate")) {
+				SpawnNodeFromName("Items Ate", pos);
+			}
+			if (ImGui::MenuItem("Items In Garden")) {
+				SpawnNodeFromName("Items In Garden", pos);
+			}
+			if (ImGui::MenuItem("Pinatas Ate")) {
+				SpawnNodeFromName("Pinatas Ate", pos);
+			}
+			if (ImGui::MenuItem("Pinatas In Garden")) {
+				SpawnNodeFromName("Pinatas In Garden", pos);
+			}
+			if (ImGui::MenuItem("Has Accessory")) {
+				SpawnNodeFromName("Has Accessory", pos);
+			}
+			if (ImGui::MenuItem("Lost A Fight")) {
+				SpawnNodeFromName("Lost A Fight", pos);
+			}
+			if (ImGui::MenuItem("Win A Fight")) {
+				SpawnNodeFromName("Win A Fight", pos);
+			}
+			if (ImGui::MenuItem("Garden Value")) {
+				SpawnNodeFromName("Garden Value", pos);
+			}
+			if (ImGui::MenuItem("Terrain In Garden")) {
+				SpawnNodeFromName("Terrain In Garden", pos);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Items In Garden")) {
-			SpawnNodeFromName("Items In Garden", pos);
-		}
-		if (ImGui::MenuItem("Pinatas Ate")) {
-			SpawnNodeFromName("Pinatas Ate", pos);
-		}
-		if (ImGui::MenuItem("Pinatas In Garden")) {
-			SpawnNodeFromName("Pinatas In Garden", pos);
-		}
-		if (ImGui::MenuItem("Has Accessory")) {
-			SpawnNodeFromName("Has Accessory", pos);
-		}
-		if (ImGui::MenuItem("Lost A Fight")) {
-			SpawnNodeFromName("Lost A Fight", pos);
-		}
-		if (ImGui::MenuItem("Win A Fight")) {
-			SpawnNodeFromName("Win A Fight", pos);
-		}
-		if (ImGui::MenuItem("Garden Value")) {
-			SpawnNodeFromName("Garden Value", pos);
-		}
-		if (ImGui::MenuItem("Terrain In Garden")) {
-			SpawnNodeFromName("Terrain In Garden", pos);
-		}
-		ImGui::EndMenu();
-	}
 
-	if (ImGui::BeginMenu("Actions")) {
-		if (ImGui::MenuItem("Romance Action")) {
-			SpawnNodeFromName("Romance Action", pos);
+		if (ImGui::BeginMenu("Actions")) {
+			if (ImGui::MenuItem("Romance Action")) {
+				SpawnNodeFromName("Romance Action", pos);
+			}
+			if (ImGui::MenuItem("Visit Action")) {
+				SpawnNodeFromName("Visit Action", pos);
+			}
+			if (ImGui::MenuItem("Variant Action")) {
+				SpawnNodeFromName("Variant Action", pos);
+			}
+			if (ImGui::MenuItem("Appear Action")) {
+				SpawnNodeFromName("Appear Action", pos);
+			}
+			if (ImGui::MenuItem("Resident Action")) {
+				SpawnNodeFromName("Resident Action", pos);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Visit Action")) {
-			SpawnNodeFromName("Visit Action", pos);
+		if (ImGui::BeginMenu("Examples")) {
+			if (ImGui::MenuItem("Pinata")) {
+				SpawnNodeFromName("Pinata", pos);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Variant Action")) {
-			SpawnNodeFromName("Variant Action", pos);
-		}
-		if (ImGui::MenuItem("Appear Action")) {
-			SpawnNodeFromName("Appear Action", pos);
-		}
-		if (ImGui::MenuItem("Resident Action")) {
-			SpawnNodeFromName("Resident Action", pos);
-		}
-		ImGui::EndMenu();
-	}
-	if (ImGui::BeginMenu("Examples")) {
-		if (ImGui::MenuItem("Top Down")) {
-			SpawnNodeFromName("Top Down", pos);
-		}
-		ImGui::EndMenu();
 	}
 }
-

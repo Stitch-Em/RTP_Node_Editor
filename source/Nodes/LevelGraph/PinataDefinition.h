@@ -3,22 +3,31 @@
 #include <random>
 #include <imgui_internal.h>
 
-class Node_TopDown : public Node
+class Node_PinataDefinition : public Node
 {
 public:
-	Node_TopDown(int id) : Node(id) { // Call the base class constructor
+	
+
+	Node_PinataDefinition(int id) : Node(id) { // Call the base class constructor
 		ID = id;
-		Name = "Top Down";
-		UniqueName = Name;
+		Data = -1; // Placeholder for pinata ID
+		if (Data == -1)
+			Name = "Select a Pinata";
+		else
+		{
+			Name = pinataNames[Data];
+		}
+		UniqueName = "PinataDefinition";
 		Color = ImColor(100, 100, 255, 150);
-		Outputs.emplace_back(rand(), "Output", PinType::Action);
-		Outputs.back().Node = this;
-		Outputs.back().Kind = PinKind::Output;
-		Outputs.back().Num = -1; // Allow multiple connections
-		Inputs.emplace_back(rand(), "Input", PinType::Action);
+		//Outputs.emplace_back(rand(), "Output", PinType::Action);
+		//Outputs.back().Node = this;
+		//Outputs.back().Kind = PinKind::Output;
+		//Outputs.back().Num = -1; // Allow multiple connections
+		Inputs.emplace_back(rand(), "Level", PinType::Action);
 		Inputs.back().Node = this;
 		Inputs.back().Kind = PinKind::Input;
 		Inputs.back().Num = -1; // Allow multiple connections
+
 	}
 
 	void Render() override
@@ -27,10 +36,11 @@ public:
 		const float rounding = 5.0f;
 		const float padding = 12.0f;
 
-		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(128, 128, 255, 200));
-		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(32, 32, 32, 200));
-		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 180, 255, 150));
-		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(60, 180, 255, 150));
+		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(40, 220, 40, 200));         // Strong green background
+		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(20, 140, 20, 220));     // Deep green border
+		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 240, 60, 180));        // Bright green pin
+		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(30, 180, 30, 200));  // Darker green pin border
+
 
 		ed::PushStyleVar(ed::StyleVar_NodePadding, ImVec4(0, 0, 0, 0));
 		ed::PushStyleVar(ed::StyleVar_NodeRounding, rounding);
@@ -115,7 +125,7 @@ public:
 		ImGui::EndHorizontal();
 
 		auto* drawList = ed::GetNodeBackgroundDrawList(ID);
-		ImColor pinBarColor = ImColor(60, 180, 255, 150);
+		ImColor pinBarColor = ImColor(20, 140, 20, 220);     // Deep green border
 		float pinBarRounding = 4.0f;
 
 		if (drawList)
@@ -164,4 +174,43 @@ public:
 		ed::PopStyleVar(7);
 		ed::PopStyleColor(4);
 	}
+
+	void DoubleClick() override;
+
+	void RenderDetails() override
+	{
+		const char* PinataName;
+		if (Data == -1) {
+			PinataName = "Select a Pinata";
+		}
+		else {
+			PinataName = pinataNames[Data].c_str();
+		}
+		if (ImGui::BeginCombo("Pinata", PinataName)) {
+			for (int i = 0; i < pinataNames.size(); ++i) {
+				bool isSelected = (Data == i);
+				if (ImGui::Selectable(pinataNames[i].c_str(), isSelected)) {
+					Data = i;
+					Name = pinataNames[Data];
+				}
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+	}
+
+	//Restores the node data from the given data
+	void RestoreData(const NodeSave data) override {
+		ID = data.ID;
+		UniqueName = data.Name;
+		Data = data.Data;
+		Inputs = data.Inputs;
+		Outputs = data.Outputs;
+		Name = pinataNames[Data];
+	}
+
+	private:
+		std::vector<std::string> pinataNames = csv::Load("Pinatas", 0);
 };

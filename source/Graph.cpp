@@ -44,8 +44,13 @@ void DrawGraph()
             selectedNodeId = ed::NodeId(0); // Clear if nothing is selected
         }
 
-        for (auto& node : nodes)
+        for (auto& node : nodes) {
             node->Render();
+            // Check for double-click on this node
+			if (ed::GetDoubleClickedNode() == node->ID) {
+                node->DoubleClick();
+            }
+        }
 
         for (auto& link : links) {
             Pin* from = FindPinById(link.From);

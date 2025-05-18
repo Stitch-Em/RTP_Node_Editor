@@ -13,6 +13,7 @@ public:
 	Node_GetEgg(int id) : Node_GetItem(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Get Egg";
+		UniqueName = Name;
 		Color = ImColor(150, 200, 255, 150);
 		Outputs.clear();
 		Outputs.emplace_back(rand(), "Egg", PinType::Item);

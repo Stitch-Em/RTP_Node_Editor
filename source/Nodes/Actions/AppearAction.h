@@ -9,6 +9,7 @@ public:
     Node_AppearAction(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Appear Action";
+		UniqueName = Name;
 		Color = ImColor(255, 64, 180, 255);
 		Inputs.emplace_back(rand(), "Requirements", PinType::Requirement);
 		Inputs.back().Num = -1; // Allow multiple connections

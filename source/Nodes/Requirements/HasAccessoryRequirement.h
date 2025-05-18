@@ -10,6 +10,7 @@ public:
 	Node_HasAccessoryRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Has Assessory";
+		UniqueName = Name;
 		Color = ImColor(77, 229, 102, 150);
 		Inputs.emplace_back(rand(), "Accessory", PinType::Accessory);
 		Inputs.back().Kind = PinKind::Input;

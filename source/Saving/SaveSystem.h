@@ -54,7 +54,7 @@ inline void SaveFile(const std::string& Path) {
 
 
         //Set values
-        save_json["Nodes"][node_id]["Name"] = node->Name;
+		save_json["Nodes"][node_id]["Name"] = node->UniqueName;
         save_json["Nodes"][node_id]["Position"]["y"] = nodePos.Position.y;
         save_json["Nodes"][node_id]["Position"]["x"] = nodePos.Position.x;
         save_json["Nodes"][node_id]["Data"] = node->Data;

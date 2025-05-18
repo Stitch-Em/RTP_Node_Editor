@@ -3,23 +3,27 @@
 #include <random>
 #include <imgui_internal.h>
 
-class Node_TopDown : public Node
+class Node_ItemDefinition : public Node
 {
 public:
-	Node_TopDown(int id) : Node(id) { // Call the base class constructor
+	Node_ItemDefinition(int id) : Node(id) { // Call the base class constructor
 		ID = id;
-		Name = "Top Down";
+		Name = "Item List";
 		UniqueName = Name;
 		Color = ImColor(100, 100, 255, 150);
-		Outputs.emplace_back(rand(), "Output", PinType::Action);
-		Outputs.back().Node = this;
-		Outputs.back().Kind = PinKind::Output;
-		Outputs.back().Num = -1; // Allow multiple connections
 		Inputs.emplace_back(rand(), "Input", PinType::Action);
 		Inputs.back().Node = this;
 		Inputs.back().Kind = PinKind::Input;
 		Inputs.back().Num = -1; // Allow multiple connections
 	}
+
+	std::vector<std::string> ItemList = {
+		"Tomato Seed",
+		"Carrot Seed",
+		"Turnip Seed",
+		"Tier 1 Shovel",
+		"Tier 1 Watering Can"
+	};
 
 	void Render() override
 	{
@@ -27,10 +31,10 @@ public:
 		const float rounding = 5.0f;
 		const float padding = 12.0f;
 
-		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(128, 128, 255, 200));
-		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(32, 32, 32, 200));
-		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 180, 255, 150));
-		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(60, 180, 255, 150));
+		ed::PushStyleColor(ed::StyleColor_NodeBg, ImColor(40, 80, 220, 200));         // Strong blue background
+		ed::PushStyleColor(ed::StyleColor_NodeBorder, ImColor(20, 40, 140, 220));     // Deep blue border
+		ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 120, 240, 180));       // Bright blue pin
+		ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(30, 60, 180, 200));  // Darker blue pin border
 
 		ed::PushStyleVar(ed::StyleVar_NodePadding, ImVec4(0, 0, 0, 0));
 		ed::PushStyleVar(ed::StyleVar_NodeRounding, rounding);
@@ -115,7 +119,7 @@ public:
 		ImGui::EndHorizontal();
 
 		auto* drawList = ed::GetNodeBackgroundDrawList(ID);
-		ImColor pinBarColor = ImColor(60, 180, 255, 150);
+		ImColor pinBarColor = ImColor(20, 40, 140, 220);     // Deep blue border
 		float pinBarRounding = 4.0f;
 
 		if (drawList)
@@ -158,10 +162,58 @@ public:
 			}
 		}
 
+		for (const auto& item : ItemList)
+		{
+			ImGui::Spring(1);
+			//Add dot
+			ImGui::Bullet();
+			ImGui::SameLine();
+			ImGui::TextUnformatted(item.c_str());
+			ImGui::Spring(1);
+		}
+
 		ImGui::EndVertical();
 
 		ed::EndNode();
 		ed::PopStyleVar(7);
 		ed::PopStyleColor(4);
 	}
+
+
+	void RenderDetails() override
+	{
+		// Make it so i can add items to the list or remove them
+		ImGui::Text("Item List");
+		ImGui::Separator();
+		for (size_t i = 0; i < ItemList.size(); ++i)
+		{
+			if (ImGui::BeginCombo(std::string("##" + std::to_string(i)).c_str(), ItemList[i].c_str())) {
+				for (int j = 0; j < itemNames.size(); ++j) {
+					bool isSelected = (ItemList[i] == itemNames[j]);
+					if (ImGui::Selectable(itemNames[j].c_str(), isSelected)) {
+						ItemList[i] = itemNames[j];
+					}
+					if (isSelected) {
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+
+			ImGui::SameLine();
+			if (ImGui::Button(("X##" + std::to_string(i)).c_str()))
+			{
+				ItemList.erase(ItemList.begin() + i);
+				break;
+			}
+		}
+		if (ImGui::Button("Add Item"))
+		{
+			ItemList.push_back("New Item");
+		}
+
+	}
+
+	private:
+		std::vector<std::string> itemNames = csv::Load("Items", 0);
 };

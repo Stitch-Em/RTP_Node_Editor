@@ -24,6 +24,13 @@ class Node; // Forward declaration
 
 enum class PinKind { Output, Input };
 enum class PinType { Item, Pinata, Accessory, Ground, Int, Float, Requirement, Action };
+enum class GraphType {Level, Requirements};
+
+//What pinata is currently being modified in the requirements graph
+inline int currentPinata = -1;
+
+inline GraphType currentGraph = GraphType::Level;
+inline int currentLevel = 0;
 
 struct Pin {
     ed::PinId ID;

@@ -1,0 +1,82 @@
+{
+    "Links": {
+        "15724": {
+            "From": 6334,
+            "To": 18467
+        },
+        "19169": {
+            "From": 6334,
+            "To": 26500
+        },
+        "26500": {
+            "From": 6334,
+            "To": 41
+        }
+    },
+    "Nodes": {
+        "1": {
+            "Data": 24,
+            "Inputs": {
+                "41": {
+                    "Kind": 1,
+                    "Name": "Level",
+                    "Num": -1,
+                    "Type": 7
+                }
+            },
+            "Name": "PinataDefinition",
+            "Position": {
+                "x": 4.0,
+                "y": 346.0
+            }
+        },
+        "2": {
+            "Data": 0,
+            "Inputs": {
+                "18467": {
+                    "Kind": 1,
+                    "Name": "Input",
+                    "Num": -1,
+                    "Type": 7
+                }
+            },
+            "Name": "Item List",
+            "Position": {
+                "x": 420.0,
+                "y": 346.0
+            }
+        },
+        "3": {
+            "Data": 0,
+            "Name": "Level Root",
+            "Outputs": {
+                "6334": {
+                    "Kind": 0,
+                    "Name": "Unlocks",
+                    "Num": -1,
+                    "Type": 7
+                }
+            },
+            "Position": {
+                "x": 228.0,
+                "y": 206.0
+            }
+        },
+        "4": {
+            "Data": 64,
+            "Inputs": {
+                "26500": {
+                    "Kind": 1,
+                    "Name": "Level",
+                    "Num": -1,
+                    "Type": 7
+                }
+            },
+            "Name": "PinataDefinition",
+            "Position": {
+                "x": 212.0,
+                "y": 346.0
+            }
+        }
+    }
+}

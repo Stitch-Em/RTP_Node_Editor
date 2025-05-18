@@ -10,6 +10,7 @@ public:
     Node_GetTerrain(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Get Terrain";
+		UniqueName = Name;
 		Color = ImColor(150, 200, 255, 150);
 		Outputs.emplace_back(rand(), "Terrain", PinType::Ground);
 		Outputs.back().Kind = PinKind::Output;

@@ -13,6 +13,7 @@ public:
     Node_GetHouse(int id) : Node_GetItem(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Get House";
+		UniqueName = Name;
 		Color = ImColor(150, 200, 255, 150);
 		Outputs.emplace_back(rand(), "House", PinType::Item);
 		Outputs.back().Kind = PinKind::Output;

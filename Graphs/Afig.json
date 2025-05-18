@@ -1,0 +1,20 @@
+{
+    "Nodes": {
+        "1": {
+            "Data": 0,
+            "Inputs": {
+                "41": {
+                    "Kind": 1,
+                    "Name": "Actions",
+                    "Num": -1,
+                    "Type": 7
+                }
+            },
+            "Name": "",
+            "Position": {
+                "x": 584.0,
+                "y": 256.0
+            }
+        }
+    }
+}

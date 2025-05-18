@@ -11,6 +11,7 @@ public:
 	Node_TerrainInGardenRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Terrain In Garden";
+		UniqueName = Name;
 		Color = ImColor(77, 229, 102, 150);
 		Inputs.emplace_back(rand(), "Terrain", PinType::Ground);
 		Inputs.back().Kind = PinKind::Input;

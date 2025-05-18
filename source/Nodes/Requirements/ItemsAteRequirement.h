@@ -11,6 +11,7 @@ public:
 	Node_ItemsAteRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Items Ate";
+		UniqueName = Name;
 		//ImVec4(0.3f, 0.9f, 0.4f, 1.0f); 
 		Color = ImColor(77, 229, 102, 150);
 		Inputs.emplace_back(rand(), "Item", PinType::Item);

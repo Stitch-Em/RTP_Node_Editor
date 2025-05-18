@@ -11,6 +11,7 @@ public:
 	Node_LoseAFightRequirement(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Lost A Fight";
+		UniqueName = Name;
 		Color = ImColor(77, 229, 102, 150);
 		Inputs.emplace_back(rand(), "Pinata", PinType::Pinata);
 		Inputs.back().Kind = PinKind::Input;

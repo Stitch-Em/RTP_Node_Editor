@@ -9,6 +9,7 @@ class Node {
 public:
     ed::NodeId ID;
     std::string Name;
+	std::string UniqueName = Name;
     std::vector<Pin> Inputs;
     std::vector<Pin> Outputs;
     ImColor Color;
@@ -23,6 +24,11 @@ public:
     virtual void Render();
 
     virtual void RenderDetails();
+
+	virtual void DoubleClick() {
+		// Handle double-click event
+		std::cout << "Node " << ID.Get() << " double-clicked!" << std::endl;
+	}
 
     //Converts the current node data for saving
 	virtual NodeSave GetSaveData() {

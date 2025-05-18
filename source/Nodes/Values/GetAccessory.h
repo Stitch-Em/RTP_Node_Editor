@@ -10,6 +10,7 @@ public:
     Node_GetAccessory(int id) : Node(id) { // Call the base class constructor  
 		ID = id;
 		Name = "Get Accessory";
+		UniqueName = Name;
 		Color = ImColor(150, 200, 255, 150);
 		Outputs.emplace_back(rand(), "Accessory", PinType::Accessory);
 		Outputs.back().Kind = PinKind::Output;
